@@ -1,0 +1,139 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+	{% if title %}
+		<title>Semicolon Central- {{title}}</title>
+	{% else %}
+		<title>Semicolon Central</title>
+	{% endif %}
+<style type="text/css">
+	.fa-flag-search {
+		color: gray;
+	}
+	.fa-flag-search:hover {
+		color: #666666;
+	}
+	.fa-flag:hover {
+    	color: #666666;
+	}
+</style>
+</head>
+<body class="d-flex flex-column">
+	<nav class="navbar navbar-expand-sm bg-dark navbar-dark justify-content-end mb-2">
+	    <!-- <img src='{{url_for("static", filename="Semicolon Central_transpback.png")}}' class="navbar-brand" href="home.html" style="height: 55px"></img> -->
+	    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+	        <span class="navbar-toggler-icon"></span>
+	    </button>
+	    <div class="collapse navbar-collapse" id="navbarNav">
+	        <ul class="navbar-nav mr-auto">
+	        	<li class="nav-item active mr-2">
+	        		<a href="{{url_for('main.homepage')}}"><img src='{{url_for("static", filename="Semicolon Central_transp_white.png")}}' class="navbar-brand" style="height: 55px"></img></a>
+	        	</li>
+	        	<li class='nav-item mt-2'>
+	        		<form class='form-inline' action="#">
+						<input type="search" id="search" class="form-control" placeholder="Search tags, people and blogs"
+				 		aria-label="Search" size='50'/>
+				 		<span class="ml-2">
+				 			<a class='btn-logout' href="#">
+				 				<i class="fas fa-search fa-flag-search fa-2x"></i>
+				 			</a>
+				 		</span>
+				 	</form>
+	        	</li>
+	            <!-- <li class="nav-item active">
+	                <a class="nav-link" href='{{ url_for('main.homepage') }}'>Home <span class="sr-only">(current)</span></a>
+	            </li>
+	            <li class="nav-item">
+	                <a class="nav-link" href="{{ url_for('main.about_us') }}">About Us</a>
+	            </li> -->
+	        </ul>
+	        <ul class="navbar-nav">
+	        	<!-- <li class="nav-item active">
+	                <a class="nav-link" href='{{ url_for('main.homepage') }}'>Home <span class="sr-only">(current)</span></a>
+	            </li> -->
+	            <li class="nav-item">
+	                <a class="nav-link mr-2 font-weight-bold" href="{{ url_for('main.about_us') }}">About</a>
+	            </li>
+	        	{% if current_user.is_authenticated %}
+	        		<!-- <li class="nav-item">
+		                <b><a class="nav-link" href="{{ url_for('users.account') }}">{{ current_user.username }}</a></b>
+		            </li>
+		        	<li class="nav-item">
+		                <a class="nav-link" href="{{ url_for('users.logout') }}">Logout</a>
+		            </li>
+		            <li class="nav-item">
+		                <a class="nav-link" href="{{ url_for('posts.new_post') }}">Create Post</a>
+		            </li> -->
+					<div class="dropdown pl-2">
+						<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{ current_user.username }}</button>
+						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+							<a class="dropdown-item" href="{{ url_for('users.account') }}">
+								View Account
+							</a>
+							<a class="dropdown-item" href="{{ url_for('posts.new_post') }}">
+								Create Post
+							</a>
+							<div class="dropdown-divider"></div>
+							<a class="dropdown-item" href="{{ url_for('users.logout') }}">Logout</a>
+						</div>
+					</div>
+	        	{% else %}
+		            <li class="nav-item">
+		                <a class="nav-link mr-2 font-weight-bold" href="{{ url_for('users.login') }}">Login</a>
+		            </li>
+		            <li class="nav-item">
+		                <a class="nav-link font-weight-bold" href="{{ url_for('users.register') }}">Register</a>
+		            </li>
+	            {% endif %}
+	        </ul>
+	    </div>
+	</nav>
+    <!-- Page Content -->
+	<div class="container mb-4">
+		<div class="row">
+
+		  <!-- Blog Entries Column -->
+		  <div class="col-md-8">
+		    <!-- Blog Post -->
+		    	{% with messages = get_flashed_messages(with_categories=true) %}
+		    		{% if messages %}
+		    			{% for category, message in messages %}
+		    				<div class="alert alert-{{category}} alert-dismissible" role="alert">
+							    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							    <strong>{{ message }}</strong>
+						    </div>
+		    			{% endfor %}
+		    		{% endif %}
+		    	{% endwith %}
+		      	{% block content %}
+		      	{% endblock content %}
+		  </div>
+		</div>
+	</div>
+	<br/><br/>
+	<footer class="text-center text-lg-start mt-5 p-2" style='flex-shrink: none;background-color: rgba(0, 0, 0, 0.4);'>
+		<div class="d-flex justify-content-center">
+			<a href="{{url_for('main.homepage')}}"><img src='{{url_for("static", filename="Semicolon Central_transp_black.png")}}' class="mt-2 mb-1" style="height: 75px"></img></a>
+		</div>
+		<div class="text-center">
+			<p class="text-dark mt-1">Made by <b>Prateek Joshi</b></p>
+			<div>
+				<a class='btn logout' href='#' name='GitHub'><i class="fab fa-github fa-2x fa-flag"></i></a>
+				<!-- <a class='btn logout' href='#'><i class="fab fa-instagram fa-2x ml-2 fa-flag"></i></a> -->
+				<a class='btn logout' href='#'><i class="fab fa-linkedin fa-2x ml-2 fa-flag"></i></a>
+			</div>
+		</div>
+	</footer>
+
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+</body>
+</html>

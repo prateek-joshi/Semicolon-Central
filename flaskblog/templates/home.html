@@ -1,0 +1,40 @@
+{% extends 'layout.html' %}
+{% block content %}
+	{% for post in posts.items %}
+		<div class="media-content card mt-3">
+			<div class='media card-body'>
+				<img class='rounded-circle account-img' src="{{ url_for('static', filename='profile_pics/'+post.author.profile) }}" style='height: 50px;'>
+				<div class='media-body ml-3'>
+					<p class='mb-1 text-muted border-bottom' style='text-decoration: none; margin-right: 50px;'>
+						<span class='text h6'>
+							Written By <a class='mr-1' href='{{url_for("users.user_posts",username=post.author.username)}}' style="text-decoration: none;">{{post.author.username}}</a>
+						</span>
+						<span class='text-muted ml-1 float-right' style="font-size: 14px">{{post.date.strftime('%d-%m-%Y')}}</span>
+					</p>
+					<a class='h3 text-decoration-none' href='{{url_for("posts.post",post_id=post.id)}}' style="text-decoration: none;">{{post.title}}</a>
+				</div>
+			</div>
+			<div class="card-body" style="margin-left: 65px; margin-right: 50px;">
+				<p class="card-text description" style='white-space: pre-line;'>
+					{{post.content}}
+				</p>
+			</div>
+		</div>
+	{% endfor %}
+
+	{% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+		{% if page_num %}
+			{% if posts.page == page_num %}
+				<a class='btn btn-info mb-3 mt-4'href="{{url_for('main.homepage', page=page_num)}}">
+					{{ page_num }}
+				</a>
+			{% else %}
+				<a class='btn btn-outline-info mb-3 mt-4'href="{{url_for('main.homepage', page=page_num)}}">
+					{{ page_num }}
+				</a>
+			{% endif %}
+		{% else %}
+			...
+		{% endif %}
+	{% endfor %}
+{% endblock content %}
